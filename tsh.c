@@ -193,7 +193,11 @@ void eval(char *cmdline)
         }
         //*********************************************
         sigprocmask(SIG_BLOCK, &mask_all, NULL);
-        addjob(jobs, pid, bg, cmdline);
+        if (bg)
+            addjobs(jobs, pid, BG, cmdline)
+        else if (!bg)
+            addjobs(jobs, pid, FG, cmdline)
+        
         sigprocmask(SIG_SETMASK, &prev_one, NULL);
         //*********************************************
         // Parent waits for foreground job to terminate
